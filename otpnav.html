@@ -1,46 +1,47 @@
-<head> </head>
+<html>
+  <head> </head>
 
-<body style="display: flex; align-items: center">
-  <script>
-    // Feature detection
-    if ("OTPCredential" in window) {
-      console.log('"OTPCredential" in window');
-      window.addEventListener("DOMContentLoaded", (e) => {
-        console.log("DOMContentLoaded");
+  <body style="display: flex; align-items: center">
+    <script>
+      alert('"OTPCredential" in window' + ("OTPCredential" in window));
+      // Feature detection
+      if ("OTPCredential" in window) {
+        console.log('"OTPCredential" in window');
+        window.addEventListener("DOMContentLoaded", (e) => {
+          console.log("DOMContentLoaded");
 
-        const input = document.querySelector(
-          'input[autocomplete="one-time-code"]'
-        );
+          const input = document.querySelector(
+            'input[autocomplete="one-time-code"]'
+          );
 
-        console.log("input", input);
-        if (!input) {
-          return;
-        }
-        // Invoke the WebOTP API
-        console.log("navigator.credentials", navigator.credentials);
-        navigator.credentials
-          .get({ otp: { transport: ["sms"] } })
-          .then((otp) => {
-            console.log(otp);
-            input.value = otp.code;
-            // Automatically submit the form when an OTP is obtained.
-            // if (form) form.submit();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    } else {
-      console.log("OTPCredential" in window);
-    }
-  </script>
-  <input
-    style="height: 30px; width: 200px"
-    type="text"
-    inputmode="numeric"
-    autocomplete="one-time-code"
-    pattern="\d{6}"
-    required
-  />
-  <div id="text" style="width: 200px; height: 50px"></div>
-</body>
+          console.log("input", input);
+          if (!input) {
+            return;
+          }
+          // Invoke the WebOTP API
+          console.log("navigator.credentials", navigator.credentials);
+          navigator.credentials
+            .get({ otp: { transport: ["sms"] } })
+            .then((otp) => {
+              console.log(otp);
+              input.value = otp.code;
+              // Automatically submit the form when an OTP is obtained.
+              // if (form) form.submit();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+      }
+    </script>
+    <input
+      style="height: 30px; width: 200px"
+      type="text"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      pattern="\d{6}"
+      required
+    />
+    <div id="text" style="width: 200px; height: 50px"></div>
+  </body>
+</html>
