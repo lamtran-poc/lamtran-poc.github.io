@@ -3,27 +3,28 @@
 
   <body style="display: flex; align-items: center">
     <script>
-      console.log('12321321')
-      // Feature detection
       if ("OTPCredential" in window) {
-        console.log('"OTPCredential" in window');
         window.addEventListener("DOMContentLoaded", (e) => {
-          console.log("DOMContentLoaded");
-
           const input = document.querySelector(
             'input[autocomplete="one-time-code"]'
           );
-
-          console.log("input", input);
-          if (!input) {
-            return;
-          }
+          if (!input) return;
+          // Cancel the WebOTP API if the form is submitted manually.
+          const ac = new AbortController();
+          // const form = input.closest("form");
+          // if (form) {
+          //   form.addEventListener("submit", (e) => {
+          //     // Cancel the WebOTP API.
+          //     ac.abort();
+          //   });
+          // }
           // Invoke the WebOTP API
-          console.log("navigator.credentials", navigator.credentials);
           navigator.credentials
-            .get({ otp: { transport: ["sms"] } })
+            .get({
+              otp: { transport: ["sms"] },
+              signal: ac.signal,
+            })
             .then((otp) => {
-              console.log(otp);
               input.value = otp.code;
               // Automatically submit the form when an OTP is obtained.
               // if (form) form.submit();
